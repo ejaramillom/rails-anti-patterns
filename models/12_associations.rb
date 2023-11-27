@@ -12,24 +12,26 @@ class User < ActiveRecord::Base
   has_many :memberships
 
   def find_recent_active_memberships
-    memberships.where(:active => true).
-                limit(5).
-                order("last_active_on DESC")
+    memberships.where(active: true)
+               .limit(5)
+               .order('last_active_on DESC')
   end
 end
 
 # good (use associations)
 
 class User < ActiveRecord::Base
-has_many :memberships
-def find_recent_active_memberships
-memberships.find_recently_active
-end
-end
-class Membership < ActiveRecord::Base
-belongs_to :user
-def self.find_recently_active
-where(:active => true).limit(5).order("last_active_on DESC")
-end
+  has_many :memberships
+
+  def find_recent_active_memberships
+    memberships.find_recently_active
+  end
 end
 
+class Membership < ActiveRecord::Base
+  belongs_to :user
+
+  def self.find_recently_active
+    where(active: true).limit(5).order('last_active_on DESC')
+  end
+end
