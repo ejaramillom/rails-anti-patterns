@@ -74,3 +74,18 @@ end
 class Pet < ActiveRecord::Base
   has_many :toys
 end
+
+# scope extension
+
+class Toy < ActiveRecord::Base
+  # has column :minimum_age
+end
+
+class Pet < ActiveRecord::Base
+  # has column :age
+  has_many :toys do
+    def appropriate
+      where(["minimum_age < ?", proxy_owner.age])
+    end
+  end
+end
