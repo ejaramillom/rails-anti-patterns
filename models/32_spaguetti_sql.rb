@@ -57,3 +57,20 @@ end
 class Pet < ActiveRecord::Base
   has_many :toys
 end
+
+# best
+
+class PetsController < ApplicationController
+  def show
+    @pet = Pet.find(params[:id])
+    @toys = @pet.toys.cute.paginate(params[:page])
+  end
+end
+
+class Toy < ActiveRecord::Base
+  scope :cute, where(:cute => true)
+end
+
+class Pet < ActiveRecord::Base
+  has_many :toys
+end
