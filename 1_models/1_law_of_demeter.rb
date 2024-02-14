@@ -9,17 +9,17 @@
 
 # good
 
-class Address < ActiveRecord::Base
+class Address < ApplicationRecord
   belongs_to :customer
 end
 
-class Customer < ActiveRecord::Base
+class Customer < ApplicationRecord
   has_one :address
   has_many :invoices
   delegate :street, :city, :state, :zip_code, :to => :address
 end
 
-class Invoice < ActiveRecord::Base
+class Invoice < ApplicationRecord
   belongs_to :customer
   
   delegate :name,

@@ -6,6 +6,7 @@ module V1::ApiFilter
   class FilterControllerError < StandardError; end
 
   extend ActiveSupport::Concern
+  
   included do
     def initial_filter_params(filter_params)
       valid_keys?(filter_params)

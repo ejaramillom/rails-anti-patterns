@@ -1,6 +1,6 @@
 # bad
 
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   def create_account!(account_params, user_params)
     transaction do
       account = Account.create!(account_params)
@@ -17,7 +17,7 @@ end
 
 # good
 
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   accepts_nested_attributes_for :users
 
   before_create :make_admin_user

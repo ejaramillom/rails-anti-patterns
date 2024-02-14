@@ -6,7 +6,7 @@
 
 # bad
 
-class RemoteProcess < ActiveRecord::Base
+class RemoteProcess < ApplicationRecord
   def self.find_top_running_processes(limit = 5)
     find(:all,
       :conditions => "state = 'Running'",
@@ -25,7 +25,7 @@ end
 
 # good
 
-class RemoteProcess < ActiveRecord::Base
+class RemoteProcess < ApplicationRecord
   scope :running, where(state: 'Running')
   scope :system, where(owner: ['root', 'mysql'])
   scope :sorted, order("percent_cpu desc")
@@ -37,7 +37,7 @@ RemoteProcess.running.system.sorted.top(5)
 
 # recommended
 
-class RemoteProcess < ActiveRecord::Base
+class RemoteProcess < ApplicationRecord
   def self.running
     where(:state => 'Running')
   end
@@ -57,7 +57,7 @@ end
 
 # avoid law of demeter violations smells
 
-class RemoteProcess < ActiveRecord::Base
+class RemoteProcess < ApplicationRecord
   scope :running, where(:state => 'Running')
   scope :system, where(:owner => ['root', 'mysql'])
   scope :sorted, order("percent_cpu desc")
@@ -74,7 +74,7 @@ end
 
 # bad
 
-class Song < ActiveRecord::Base
+class Song < ApplicationRecord
   def self.search(title, artist, genre, published, order, limit, page)
     condition_values = { :title => "%#{title}%", :artist => "%#{artist}%", :genre => "%#{genre}%"}
       
@@ -110,7 +110,7 @@ end
 
 # good
 
-  class Song < ActiveRecord::Base
+  class Song < ApplicationRecord
     def self.top(number)
       limit(number)
     end

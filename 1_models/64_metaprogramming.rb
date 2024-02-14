@@ -31,7 +31,7 @@ end
 
 # class defined to fulfill the test requirements 
 
-class Purchase < ActiveRecord::Base
+class Purchase < ApplicationRecord
   validates_presence_of :status
   validates :status, inclusion: { in: %w[in_progress submitted approved shipped received canceled] }
     
@@ -88,7 +88,7 @@ end
 
 # better
 
-class Purchase < ActiveRecord::Base
+class Purchase < ApplicationRecord
   STATUSES = %w(in_progress submitted approved shipped received)
   
   validates_presence_of :status
@@ -115,7 +115,7 @@ end
 # best
 
 # lib/extensions/statuses.rb
-class ActiveRecord::Base
+class ApplicationRecord
   def self.has_statuses(*status_names)
     validates :status,
     presence: true,
@@ -135,7 +135,7 @@ class ActiveRecord::Base
   end
 end
 
-class Purchase < ActiveRecord::Base
+class Purchase < ApplicationRecord
   has_statuses :in_progress, :submitted, :approved, :shipped, :received, :partially_shipped, :fully_shipped, :canceled
 
   scope :all_not_shipped, where(status: => ["partially_shipped",  "fully_shipped"])

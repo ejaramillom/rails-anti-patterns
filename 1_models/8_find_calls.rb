@@ -13,7 +13,7 @@
 
 # good
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   scope :ordered, order("last_name")
 end
 

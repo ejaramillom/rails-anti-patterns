@@ -6,7 +6,7 @@
 
 # app/models/bank_account.rb
 # app/models/order.rb
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   def self.find_purchased
   # ...
   end
@@ -43,7 +43,7 @@ end
 # good
 
 # app/models/order.rb
-class Order < ActiveRecord::Base
+class Order < ApplicationRecord
   extend OrderStateFinders
   extend OrderSearchers
   include OrderExporters

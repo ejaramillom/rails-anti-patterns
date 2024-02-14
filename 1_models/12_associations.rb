@@ -20,7 +20,7 @@ end
 
 # good (use associations)
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :memberships
 
   def find_recent_active_memberships
@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   end
 end
 
-class Membership < ActiveRecord::Base
+class Membership < ApplicationRecord
   belongs_to :user
 
   def self.find_recently_active

@@ -2,7 +2,7 @@
 
 # bad
 
-class Car << ActiveRecord::Base
+class Car << ApplicationRecord
   validates :direction, presence: true
   validates :speed, presence: true
   
@@ -20,7 +20,7 @@ class Car << ActiveRecord::Base
   # Other, car-related activities...
 end
 
-class Bicycle << ActiveRecord::Base
+class Bicycle << ApplicationRecord
   validates :direction, presence: true
   validates :speed, presence: true
   
@@ -62,12 +62,12 @@ module Drivable
   end
 end
 
-class Car << ActiveRecord::Base
+class Car << ApplicationRecord
   include Drivable
   # Other, car-related activities...
 end
 
-class Bicycle << ActiveRecord::Base
+class Bicycle << ApplicationRecord
   include Drivable
   # Other, bike-related activities...
 end
@@ -113,7 +113,7 @@ end
 # lib/drivable.rb
 require "drivable/active_record_extensions"
   
-class ActiveRecord::Base
+class ApplicationRecord
   extend Drivable::ActiveRecordExtensions::ClassMethods
 end
   
