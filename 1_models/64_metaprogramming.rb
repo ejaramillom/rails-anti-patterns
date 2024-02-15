@@ -138,7 +138,7 @@ end
 class Purchase < ApplicationRecord
   has_statuses :in_progress, :submitted, :approved, :shipped, :received, :partially_shipped, :fully_shipped, :canceled
 
-  scope :all_not_shipped, where(status: => ["partially_shipped",  "fully_shipped"])
+  scope :all_not_shipped, -> { where(status: ["partially_shipped",  "fully_shipped"]) }
   
   def not_shipped?
     !(partially_shipped? or fully_shipped?)

@@ -58,9 +58,9 @@ end
 # avoid law of demeter violations smells
 
 class RemoteProcess < ApplicationRecord
-  scope :running, where(:state => 'Running')
-  scope :system, where(:owner => ['root', 'mysql'])
-  scope :sorted, order("percent_cpu desc")
+  scope :running, -> { where(:state => 'Running') }
+  scope :system, -> { where(:owner => ['root', 'mysql']) }
+  scope :sorted, -> { order("percent_cpu desc") }
   scope :top, ->(amount) { limit(amount) }
     
   def self.find_top_running_processes(limit = 5)
@@ -76,7 +76,7 @@ end
 
 class Song < ApplicationRecord
   def self.search(title, artist, genre, published, order, limit, page)
-    condition_values = { :title => "%#{title}%", :artist => "%#{artist}%", :genre => "%#{genre}%"}
+    condition_values = { title: "%#{title}%", artist: "%#{artist}%", genre: "%#{genre}%"}
       
     case order
     when "name":
@@ -100,12 +100,12 @@ class Song < ApplicationRecord
     end
     
   find_opts = { 
-    :conditions => [conditions.join(" AND "),  condition_values],  
-    :joins  => joins.join(' '),  
-    :limit  => limit,
-    :order  => order_clause }
+    conditions: [conditions.join(" AND "),  condition_values],  
+    joins: joins.join(' '),  
+    limit: limit,
+    order: order_clause }
   page = 1 if page.blank?
-  paginate(:all, find_opts.merge(:page => page,  :per_page => 25))
+  paginate(:all, find_opts.merge(page: page,  per_page: 25))
 end
 
 # good
@@ -151,4 +151,4 @@ end
   Song.search("fool", "billy", "rock", true).
         order("length").
         top(10).
-        paginate(:page => 1)
+        paginate(page: 1)
