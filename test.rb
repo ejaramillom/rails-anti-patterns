@@ -11,14 +11,6 @@
 #
 # @return {[Number]}
 
-def two_sum(_numbers, _target)
-  _numbers.each_with_index do |number, index|
-    _numbers.each_with_index do |number2, index2|
-      return [index2, index] if number + number2 == _target && index != index2
-    end
-  end
-end
-
 examples = [
   [[4, 2, 5, 11, -1], 9, [2, 0]],
   [[7, 3, 3, 4, 6], 6, [2, 1]],
@@ -29,12 +21,21 @@ examples = [
 #   [[13, 2, 1, 6, -4], 9, [4, 0]]
 # ]
 
-examples.each do |(numbers, target, expected)|
-  result = two_sum(numbers, target)
 
-  unless result == expected || result.reverse == expected
-    raise "Given #{numbers}, expected #{expected} but got #{result}"
+
+def thing(element) 
+  string = ""
+  element.map do |object| 
+    string.concat(" #{object%2}, ")
   end
+  
+  puts string
+end 
 
-  puts "Expected #{expected} for #{numbers} and #{target}, got #{result}"
-end
+array = [1, 2, 3, 4] 
+
+# example:
+# in  - [1, 2, 3, 4]
+# out - "1, 0, 1, 0"
+
+thing(array)

@@ -69,5 +69,27 @@ This is the content for the main section of the website. Go <%=link_to "Home", r
   <div class="sidebar">
     <%= yield :sidebar %>
   </div>
-<% end %>
-            
+<% end %>>
+
+# bad
+
+<% if current_user &&
+    (current_user == @post.user ||
+    @post.editors.include?(current_user)) &&
+    @post.editable? &&
+    @post.user.active? %>
+  <%= link_to 'Edit this post', edit_post_url(@post) %>
+<% end %>>
+
+# better (create a class method to check if user can edit)
+
+<% if @post.editable_by?(current_user) %>
+  <%= link_to 'Edit this post', edit_post_url(@post) %>
+<% end %>>
+
+# better (use concerns to override getter methods of attributes)
+
+def display_title(job)
+  job.title.split(/\s*\/\s*/).join(" / ")
+end
+
