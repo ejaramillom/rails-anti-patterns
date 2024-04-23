@@ -20,17 +20,18 @@ end
   
 class ArticlesController < ApplicationController
   def create
-  @article = Article.new(params[:article])
-  @article.reporter = current_user
-  @article.new_version.writer = current_user
+    @article = Article.new(params[:article])
+    @article.reporter = current_user
+    @article.new_version.writer = current_user
     
-  if @article.save
-    render :action => :index
-  else
-    redirect_to article_path(@article)
+    if @article.save
+      render :action => :index
+    else
+      redirect_to article_path(@article)
+    end
   end
 end
-
+  
 ## app/models/article.rb
   
 class Article < ActiveRecord::Base
