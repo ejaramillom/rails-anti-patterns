@@ -27,3 +27,28 @@ def alerts_rss_url(project = nil)
     alerts_url(:rss)
   end
 end
+
+<div class="feed">
+  <%= rss_link(@project) %>
+</div>>
+
+# best (include div tag in the helper method
+
+def rss_link(project = nil)
+  content_tag :div, :class => "feed" do
+    link_to "Subscribe to these #{project.name if project} alerts.",
+      alerts_rss_url(project),
+      :class => "feed_link"
+  end
+end
+
+# or similarly
+
+def rss_link(project = nil)
+  content_tag :div, :class => "feed" do
+    content_tag :a,
+      "Subscribe to these #{project.name if project} alerts.",
+      :href => alerts_rss_url(project),
+      :class => "feed_link"
+end
+  
