@@ -23,7 +23,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(params[:article])
     @article.reporter = current_user
     @article.new_version.writer = current_user
-    
+
     if @article.save
       render :action => :index
     else
