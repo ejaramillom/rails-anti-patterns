@@ -66,17 +66,6 @@ end
 
 # better
 
-POST
-DELETE
-POST
-GET
-GET
-/admin/users/:id/password
-/admin/users/:id
-/admin/users/:id/activation
-/admin/users/:id
-/admin/users
-
 class UsersController < ApplicationController
   def index
     per_page = Variable::default_pagination_value
@@ -137,3 +126,18 @@ class ActivationsController < ApplicationController
     user.last_name + " has been activated"
   end
 end
+
+# routes 
+
+namespace :admin do
+  resources :users do
+    resource :passwords
+    resource :activations
+  end
+end
+
+POST /admin/users/:id/password
+DELETE /admin/users/:id
+POST /admin/users/:id/activation
+GET /admin/users/:id
+GET /admin/users
