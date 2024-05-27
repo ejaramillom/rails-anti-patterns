@@ -104,4 +104,93 @@ end
 <h1>Editing song</h1>
 <%= render 'form' %>
 <%= link_to 'Show', [@album, @song] %> |
-<%= link_to 'Back', @album %>
+<%= link_to 'Back', @album %>>
+
+# better (allow to reach the song either if there is an album or if there is not)
+# nested and unnested
+
+  MyApp::Application.routes.draw do
+    resources :albums do
+      resources :songs
+    end
+    resources :songs
+  end
+
+class SongsController < ApplicationController
+  before_filter :grab_album_from_album_id
+  
+  def index
+    @songs = songs.all
+  end
+
+  def show
+    @song = songs.find(params[:id])
+  end
+  
+  def new
+    @song = songs.new
+  end
+  
+  def edit
+    @song = songs.find(params[:id])
+  end
+  
+  def create
+    @song = songs.new(params[:song])
+    
+    if @song.save
+      redirect_to(@song, :notice => 'Song was successfully created.')
+    else
+      render :action => "new"
+    end
+  end
+  
+  def update
+    @song = songs.find(params[:id])
+    
+    if @song.update_attributes(params[:song])
+      redirect_to(@song, :notice => 'Song was successfully updated.')
+    else
+      render :action => "edit"
+    end
+  end
+  
+  def destroy
+    Song.find(params[:id]).destroy
+    redirect_to(songs_url)
+  end
+  
+  private
+  
+  def songs
+    @album ? @album.songs : Song
+  end
+  
+  def grab_album_from_album_id
+    @album = Album.find(params[:album_id]) if params[:album_id]
+  end
+end
+
+# view 
+
+<h1>Editing song</h1>
+<%= render 'form' %>
+<%= link_to 'Show', @song %> |
+<%= link_to 'Back', :back %>>
+
+# form
+
+<%= form_for([@album, @song]) do |f| %>
+  ...
+  <% unless @album %>
+  <div class="field">
+    <%= f.label :album %><br />
+    <%= f.select(:album_id,
+                  options_from_collection_for_select(Album.all,
+                                                      :id,
+                                                      :title,
+                                                      @song.album_id),
+    { :include_blank => true }) %>>
+  </div>
+<% end %>>
+...
