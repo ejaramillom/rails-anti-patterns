@@ -62,3 +62,31 @@ SELECT DISTINCT users.* FROM users
   INNER JOIN comments comments_articles
     ON comments_articles.article_id = articles.id
   WHERE (articles.id in (1) AND users.id != 1)
+
+# good (move processing into background jobs)
+
+# a list of possible pain points in a normal request/response cycle
+
+# generating reports
+# updating lots of related data in an associated object based on user action
+# updating various caches
+# communicating with slower external resources
+# sending email
+
+# There are a number of popular queuing systems for Rails. Two of the most popular and well supported are delayed_job (or DJ; http://github.com/tobi/delayed_job) and Resque (http://github.com/defunkt/resque). Both of these are libraries for creating background jobs, placing jobs in queues, and processing those queues. Resque is backed by a Redis datastore, and delayed_job is SQL backed.
+
+class SalesReport < Struct.new(:user)
+def perform
+report = generate_report
+Mailer.sales_report(user, report).deliver
+end
+private
+def generate_report
+FasterCSV.generate do |csv|
+csv << CSV_HEADERS
+Sales.find_each do |sale|
+csv << sale.to_a
+end
+end
+end
+end
