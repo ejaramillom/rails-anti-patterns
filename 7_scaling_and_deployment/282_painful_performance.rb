@@ -76,17 +76,25 @@ SELECT DISTINCT users.* FROM users
 # There are a number of popular queuing systems for Rails. Two of the most popular and well supported are delayed_job (or DJ; http://github.com/tobi/delayed_job) and Resque (http://github.com/defunkt/resque). Both of these are libraries for creating background jobs, placing jobs in queues, and processing those queues. Resque is backed by a Redis datastore, and delayed_job is SQL backed.
 
 class SalesReport < Struct.new(:user)
-def perform
-report = generate_report
-Mailer.sales_report(user, report).deliver
+  def perform
+    report = generate_report
+    Mailer.sales_report(user, report).deliver
+  end
+  
+  private
+  
+  def generate_report
+    FasterCSV.generate do |csv|
+      csv << CSV_HEADERS
+      Sales.find_each do |sale|
+        csv << sale.to_a
+      end
+    end
+  end
 end
-private
-def generate_report
-FasterCSV.generate do |csv|
-csv << CSV_HEADERS
-Sales.find_each do |sale|
-csv << sale.to_a
-end
-end
-end
+
+# If users should be able to request that a sales report be mailed to them, you can place this code in the create action of ReportsController, as shown here:
+
+def create
+  Delayed::Job.enqueue SalesReport.new(current_user)
 end
