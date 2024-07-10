@@ -1,5 +1,3 @@
-# bad
-
 # bad 
 
 # Very often, there is quite a bit of functionality associated with these types of models (states, categories, and so on) and, therefore, it’s not desirable to allow end users or even administrators to add or remove available states in the database. For example, if the article publication workflow changes and a new state needs to be added, it’s unlikely that an administrator can simply add the state to the database and have everything as desired. Therefore, when you’re building lean, agile applications, it doesn’t make sense to spend time and effort programming an administrative interface for states. And if there isn’t a user interface for adding and removing states, then it simply isn’t worthwhile to store the states in the database. Instead, you can just store the states in the code itself.
